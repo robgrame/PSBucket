@@ -85,8 +85,18 @@ function Invoke-BitlockerEscrowAD ($BitlockerDrive,$BitlockerKey) {
 #region execute
 
 Test-Bitlocker -BitlockerDrive $DriveLetter
-$KeyProtectorId = Get-KeyProtectorId -BitlockerDrive $DriveLetter
-Invoke-BitlockerEscrowAAD -BitlockerDrive $DriveLetter -BitlockerKey $KeyProtectorId
-Invoke-BitlockerEscrowAD -BitlockerDrive $DriveLetter -BitlockerKey $KeyProtectorId
+
+$BLVs = Get-BitLockerVolume
+foreach ($volume in $BLVs) {
+    if ($volume.KeyProtector.RecoveryPassword) {
+        foreach ($kp in $volume.KeyProtector) {
+            if ($kp.RecoveryPassword) {
+                Invoke-BitlockerEscrowAAD -BitlockerDrive $volume.MountPoint -BitlockerKey $kp.KeyProtectorId
+                Invoke-BitlockerEscrowAD -BitlockerDrive $volume.MountPoint -BitlockerKey $kp.KeyProtectorId
+               
+            }
+        }
+    }
+}
 
 #endregion execute
