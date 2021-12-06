@@ -59,7 +59,6 @@ function Invoke-BitlockerEscrowAAD ($BitlockerDrive,$BitlockerKey) {
     try {
         BackupToAAD-BitLockerKeyProtector -MountPoint $BitlockerDrive -KeyProtectorId $BitlockerKey -ErrorAction SilentlyContinue
         Write-Output "Attempted to escrow key in Azure AD - Please verify manually!"
-        exit 0
     } catch {
         Write-Error "This should never have happend? Debug me!"
         exit 1
@@ -73,7 +72,6 @@ function Invoke-BitlockerEscrowAD ($BitlockerDrive,$BitlockerKey) {
     try {
         Backup-BitLockerKeyProtector -MountPoint $BitlockerDrive -KeyProtectorId $BitlockerKey -ErrorAction SilentlyContinue
         Write-Output "Attempted to escrow key in  AD - Please verify manually!"
-        exit 0
     } catch {
         Write-Error "This should never have happend? Debug me!"
         exit 1
