@@ -70,8 +70,8 @@ function Invoke-BitlockerEscrowAD ($BitlockerDrive,$BitlockerKey) {
 
    #Escrow the key into AD
     try {
-        Backup-BitLockerKeyProtector -MountPoint $BitlockerDrive -KeyProtectorId $BitlockerKey.KeyProtectorId -ErrorAction SilentlyContinue
-        Write-Output "Attempted to escrow key in  AD - Please verify manually!"
+        Backup-BitLockerKeyProtector -MountPoint $BitlockerDrive -KeyProtectorId $BitlockerKey -ErrorAction SilentlyContinue
+        Write-Output "Attempted to escrow key in AD - Please verify manually!"
     } catch {
         Write-Error "This should never have happend? Debug me!"
         exit 1
