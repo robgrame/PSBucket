@@ -54,7 +54,7 @@ function Get-KeyProtectorId ($BitlockerDrive) {
     return $KeyProtector.KeyProtectorId
 }
 
-function Invoke-BitlockerEscrow ($BitlockerDrive,$BitlockerKey) {
+function Invoke-BitlockerEscrowAAD ($BitlockerDrive,$BitlockerKey) {
     #Escrow the key into Azure AD
     try {
         BackupToAAD-BitLockerKeyProtector -MountPoint $BitlockerDrive -KeyProtectorId $BitlockerKey -ErrorAction SilentlyContinue
@@ -65,11 +65,13 @@ function Invoke-BitlockerEscrow ($BitlockerDrive,$BitlockerKey) {
         exit 1
     }
     
-    #Escrow the key into AD
+ 
+}
+function Invoke-BitlockerEscrowAD ($BitlockerDrive,$BitlockerKey) {
+
+   #Escrow the key into AD
     try {
         Backup-BitLockerKeyProtector -MountPoint $BitlockerDrive -KeyProtectorId $BitlockerKey -ErrorAction SilentlyContinue
-
-
         Write-Output "Attempted to escrow key in  AD - Please verify manually!"
         exit 0
     } catch {
@@ -84,6 +86,7 @@ function Invoke-BitlockerEscrow ($BitlockerDrive,$BitlockerKey) {
 
 Test-Bitlocker -BitlockerDrive $DriveLetter
 $KeyProtectorId = Get-KeyProtectorId -BitlockerDrive $DriveLetter
-Invoke-BitlockerEscrow -BitlockerDrive $DriveLetter -BitlockerKey $KeyProtectorId
+Invoke-BitlockerEscrowAAD -BitlockerDrive $DriveLetter -BitlockerKey $KeyProtectorId
+Invoke-BitlockerEscrowAD -BitlockerDrive $DriveLetter -BitlockerKey $KeyProtectorId
 
 #endregion execute
