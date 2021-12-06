@@ -64,6 +64,18 @@ function Invoke-BitlockerEscrow ($BitlockerDrive,$BitlockerKey) {
         Write-Error "This should never have happend? Debug me!"
         exit 1
     }
+    
+    #Escrow the key into AD
+    try {
+        Backup-BitLockerKeyProtector -MountPoint $BitlockerDrive -KeyProtectorId $BitlockerKey -ErrorAction SilentlyContinue
+
+
+        Write-Output "Attempted to escrow key in  AD - Please verify manually!"
+        exit 0
+    } catch {
+        Write-Error "This should never have happend? Debug me!"
+        exit 1
+    }
 }
 
 #endregion functions
